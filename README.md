@@ -1,3 +1,4 @@
 # optimization-class-project
 
-Final project for the Mathematical Optimization class at DCAM MIPT.
+Final project for undergraduate course on Mathematical Optimization class taught
+at DCAM MIPT.
