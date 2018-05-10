@@ -1,4 +1,4 @@
-% Template file for an a0 landscape poster.
+%  Template file for an a0 landscape poster.
 % Written by Graeme, 2001-03 based on Norman's original microlensing
 % poster.
 %
@@ -52,6 +52,9 @@
 \definecolor{Red}{rgb}{0.9,0.0,0.1}
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{subfig}
 
 \definecolor{bluegray}{rgb}{0.15,0.20,0.40}
 \definecolor{bluegraylight}{rgb}{0.35,0.40,0.60}
@@ -112,7 +115,8 @@
 % Watch out for hyphenation in titles - LaTeX will do it
 % but it looks awful.
 \begin{textblock}{23}(0,0)
-\Title{Empirical Study of $\text{TD}_{\gamma}$ Reinforcement Learning Algorithm}
+\Title{Empirical Study of $\text{TD}_{\gamma}$ Reinforcement Learning
+       algorithms}
 \end{textblock}
 
 \begin{textblock}{23}(0,0.6)
@@ -147,13 +151,52 @@ Kirill Bobyrev
 
 \medskip
 \hrule\medskip
-\Head{Introduction}\\
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\Head{Reinforcement Learning at a glance}\\
 
-\medskip
-\hrule\medskip
-\Head{Problem}\\
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Reinforcement Learning is an area of machine learning concerned with how
+\textit{agents} should take \textit{actions} in an \textit{environment} so as
+to maximize the \textit{cumulative reward}.
+
+\begin{center}
+  \begin{figure}
+    \includegraphics[width=0.45\textwidth]{figures/rl-intro-diagram.jpeg}
+    \caption{Reinforcement Learning world model}
+  \end{figure}
+\end{center}
+
+Reinforcement Learning problem is typically modelled by Markov Decision Process:
+
+\begin{itemize}
+  \item $\mathcal{S}$ --- set of states, it can be finitie or infinite, discrete
+    or continuous
+  \item $\mathcal{A}$ --- set of actions availible to the agent
+  \item $P_a(s, s') = P(S_{t+1} = s' | S_t = s, A_t = a)$ --- probabilities of
+    action $a$ in state $s$ leading to state $s'$
+  \item $r_a(s, s') = r(S_{t+1} = s' | S_t = s, A_t = a)$ --- numerical reward
+    distribution, a rule incorporated in the environment which indicates which
+    reward is given to the agent upon taking action $a$ in state $s$ and
+    resulting in state $s'$
+  \item $\gamma \in [0, 1]$ --- discount factor which controls the relative
+    difference in importance between the future and present rewards
+\end{itemize}
+
+It is often assumed that the transitional probabilities and reward distribution
+are not directly availible to the agent. The goal of the Reinforcement Learning
+agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1}$
+by finding the optimal policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow
+[0, 1]$. In order to achieve this goal, the agent typically learns value
+function $v_\pi(s) = \mathop{\mathbb{E}}[R] = \mathop{\mathbb{E}}[\sum_{t=0}^\infty \gamma^t R_t | S_0 = s]$
+
+\begin{center}
+\begin{figure}%
+    \centering
+    \subfloat[Atari 2600 games]{{\includegraphics[width=0.40\textwidth]{figures/atari-environment-example.png}}}
+    \qquad
+    \subfloat[Sokoban]{{\includegraphics[width=0.40\textwidth]{figures/sokoban.jpg}}}
+    \caption{Sample enfironments}%
+    \label{fig:example}%
+\end{figure}
+\end{center}
 
 \end{textblock}
 
@@ -162,26 +205,65 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 \medskip
 \hrule\medskip
 \Head{$\text{TD}(\gamma)$ Algorithm}\\
-If $L$ is not known (usually the case), can use the following line search:
 
-\noindent\rule[-5pt]{.8\textwidth}{0.4pt}
+The main contribution of the paper~\cite{TDGamma} is introducing the
+$\text{TD}(\gamma)$ family of algorithms, which eliminates the $\lambda$
+parameter. It is shown that $\text{TD}(\gamma)$ outperforms current
+state-of-the-art algorithms, such as $\text{TD}(\lambda)$.
+
+$\text{TD}(\gamma)$ algorithm is the simplest algorithm of the
+$\text{TD}_{\gamma}$ family. Given a set of trajectories and a discount factor,
+it estimates $V_\pi(S)$.
+
+\noindent\rule[-5pt]{.9\textwidth}{0.4pt}
 {\footnotesize
 \begin{tabbing}
-    {\bf given} $x^k$, $\lambda^{k-1}$, and parameter $\beta \in (0,1)$. \\*[\smallskipamount]
-    Let $\lambda := \lambda^{k-1}$. \\*[\smallskipamount]
-    {\bf repeat} \\
-    \qquad \= 1.\ Let $z := \prox_{\lambda g}(x^{k} - \lambda \nabla f(x^{k}))$. \\
-    \> 2.\ {\bf break if} $f(z) \leq \hat{f}_{\lambda}(z, x^{k})$. \\
-    \> 3.\ Update $\lambda := \beta \lambda$. \\*[\smallskipamount]
-    {\bf return} $\lambda^{k} := \lambda$, $x^{k+1}:=z$.
+    {\bf Given:} A discount factor, $\gamma$ \\*[\smallskipamount]
+    Let $\theta= \boldsymbol{0}$. \\
+    {\bf for} each trajectory $\tau \in T$ {\bf do} \\
+      \qquad \= Store $\phi_0$ in memory \\
+      \> {\bf for} $u = 1$ to $l_\tau$ {\bf do} \\
+      \> \qquad \= Store $\phi_u$ and $R_{u - 1}$ in memory \\
+      \>  \> $\delta = \boldsymbol{0}$ \\
+      \>  \> {\bf for} $t = 0$ to $u - 1$ {\bf do} \\
+      \>  \> \qquad \= $\boldsymbol{a} = \phi_t - \gamma^{u - t} \phi_u$ \\
+      \>  \>  \> $b = \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ \\
+      \>  \>  \> $\boldsymbol{\delta} = \boldsymbol{\delta} + w(u - t, l_{\tau} - t)[\boldsymbol{\theta} \cdot \boldsymbol{a} - b] \phi_t$ \\
+      \>  \> {\bf end for} \\
+      \>  \> $\boldsymbol{\theta} = \boldsymbol{\theta} - \alpha \boldsymbol{\delta}$ \\
+      \> {\bf end for} \\
+      \> Discard all $\phi$ and $R$ from memory \\
+    {\bf end for}
 \end{tabbing}}
-\noindent\rule[10pt]{.8\textwidth}{0.4pt}
+\noindent\rule[10pt]{.9\textwidth}{0.4pt}
 
-typical value of $\beta$ is $1/2$, and
-\[
-\hat{f}_\lambda(x,y) = f(y) + \nabla f(y)^T (x - y) +
-(1/2\lambda)\|x - y\|_2^2
-\]
+\medskip
+\hrule\medskip
+\Head{Implementation overview}\\
+
+\begin{center}
+\begin{figure}
+  \includegraphics[width=0.35\textwidth]{figures/sokoban.jpg}
+  \caption{\textbf{IMAGE IS PLACEHOLDER, ACTUAL SCHEME WILL BE ADDED SOON} Scheme of the implementation}%
+\end{figure}
+\end{center}
+
+\medskip
+\hrule\medskip
+\Head{Importance of value estimation}\\
+Even though the field has shifted towards \textit{Q-Learning} which
+approximates $q_\pi(w, a) = \mathop{\mathbb{E}}[R] =
+\mathop{\mathbb{E}}[\sum_{t=0}^\infty R_t | S_t = s, A_t = a]$,
+$\text{TD}(\gamma)$ can be used to improve the results of state-of-the-art
+algorithms. By definition, $v_\pi(s) = \sum_{a \in \mathcal{A}} q_\pi(s, a)$
+and hence knowing the dynamics of the environment one could efficiently
+navigate it using value function. However, in most cases the transitional
+probabilities are not known to the agent. More sophisticated methods like
+model-based Reinforcement Learning are able to deal with that issue. Despite
+the additional complexity, such methods show good performance in cases where
+thorough planning is crucial for the success of chosen approach. A great
+example of such problem would be Sokoban~\cite{Sokoban} where researchers used
+the environment model to approximate model dynamics.
 
 \end{textblock}
 
@@ -190,39 +272,65 @@ typical value of $\beta$ is $1/2$, and
 \medskip
 \hrule\medskip
 \Head{Results}\\
-On this numerical example, the ADMM method converges quickly.
-We give two realizations corresponding to different parameters $A$ and $b$.
+
 \begin{center}
-\psfrag{k}[t][b]{$k$}
-\psfrag{fbest - fmin}[b][t]{$f_\mathrm{best}^{(k)} - f^\star$}
-\psfrag{noise-free realize}{noise-free case}
-\psfrag{realize1}{realization 1}
-\psfrag{realize2}{realization 2}
-\includegraphics[width=0.9\textwidth]{figures/pwl_error_fbest_realize.eps}
+\begin{figure}%
+    \centering
+    \subfloat[$\text{TD}({\lambda})$]{{\includegraphics[width=0.45\textwidth]{figures/random-walk-td-lambda.png}}}
+    \qquad
+    \subfloat[$\text{TD}({\gamma})$]{{\includegraphics[width=0.45\textwidth]{figures/random-walk-td-lambda.png}}}
+    \caption{Performance comparison}%
+    \label{fig:example}%
+\end{figure}
 \end{center}
 
 \medskip
 \hrule\medskip
 \Head{Conclusion \& Future Work}\\
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 \medskip
 \hrule\medskip
-\Head{Additional materials}\\
+\Head{Additional materials \& Acknowledgements}\\
 
-\begin{itemize}
-  \item Code
-  \item Recordings
-\end{itemize}
+\LaTeX sources and supplementary materials can be found in the author's Github
+repository:
+\href{https://github.com/omtcvxyz/optimization-class-project}{omtcvxyz/optimization-class-project}.
+Code for the experiments results reproduction is located in
+\href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{Google
+Colab}. The experiments are based on  code with further intention to contribute
+the results to main
+\href{https://github.com/ShangtongZhang/reinforcement-learning-an-introduction}{reposotiry}
+of Python implementation of "Reinforcement Learning: An
+Introduction"~\cite{Sutton}.
 
 \begin{thebibliography}{9}
 
-\bibitem{lamport94}
-  Leslie Lamport,
-  \textit{\LaTeX: a document preparation system},
-  Addison Wesley, Massachusetts,
-  2nd edition,
-  1994.
+\bibitem{TDGamma}
+  George Konidaris, Scott Niekum, Philip S. Thomas
+  \href{https://papers.nips.cc/paper/4472-td_gamma-re-evaluating-complex-backups-in-temporal-difference-learning.pdf}{
+  \textit{$\text{TD}_{\gamma}$: Re-evaluating Complex Backups in Temporal
+          Difference Learning}},
+  NIPS,
+  2011.
+
+\bibitem{Sutton}
+  Richard Sutton and Andrew Barto,
+  \href{http://incompleteideas.net/book/the-book-2nd.html}{\textit{Reinforcement Learning: An Introduction}},
+  MIT Press, Cambridge, MA,
+  Second edition,
+  2018.
+
+\bibitem{DQN}
+  Volodymyr Mnih et al,
+  \href{https://arxiv.org/abs/1312.5602}{\textit{Playing Atari with Deep Reinforcement Learning}},
+  arXiv:1312.5602,
+  2013.
+
+\bibitem{Sokoban}
+  Théophane Weber, Sébastien Racanière et al,
+  \href{https://arxiv.org/abs/1707.06203}{\textit{Imagination-Augmented Agents for Deep Reinforcement Learning}},
+  arXiv:1707.06203,
+  2017.
 
 \end{thebibliography}
 
