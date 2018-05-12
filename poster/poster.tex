@@ -55,6 +55,7 @@
 \usepackage{amsfonts}
 \usepackage{hyperref}
 \usepackage{subfig}
+\usepackage{verbatim}
 
 \definecolor{bluegray}{rgb}{0.15,0.20,0.40}
 \definecolor{bluegraylight}{rgb}{0.35,0.40,0.60}
@@ -182,10 +183,10 @@ Reinforcement Learning problem is typically modelled by Markov Decision Process:
 
 It is often assumed that the transitional probabilities and reward distribution
 are not directly availible to the agent. The goal of the Reinforcement Learning
-agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1}$
+agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1})$
 by finding the optimal policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow
 [0, 1]$. In order to achieve this goal, the agent typically learns value
-function $v_\pi(s) = \mathop{\mathbb{E}}[R] = \mathop{\mathbb{E}}[\sum_{t=0}^\infty \gamma^t R_t | S_0 = s]$
+function $v_\pi(s) = \mathbb{E}[R] = {\mathbb{E}}[\sum_{t=0}^\infty \gamma^t R_t | S_0 = s]$
 
 \begin{center}
 \begin{figure}%
@@ -206,14 +207,14 @@ function $v_\pi(s) = \mathop{\mathbb{E}}[R] = \mathop{\mathbb{E}}[\sum_{t=0}^\in
 \hrule\medskip
 \Head{$\text{TD}(\gamma)$ Algorithm}\\
 
-The main contribution of the paper~\cite{TDGamma} is introducing the
+The main contribution of the studied paper is introducing the
 $\text{TD}(\gamma)$ family of algorithms, which eliminates the $\lambda$
 parameter. It is shown that $\text{TD}(\gamma)$ outperforms current
-state-of-the-art algorithms, such as $\text{TD}(\lambda)$.
-
-$\text{TD}(\gamma)$ algorithm is the simplest algorithm of the
-$\text{TD}_{\gamma}$ family. Given a set of trajectories and a discount factor,
-it estimates $V_\pi(S)$.
+state-of-the-art algorithms, such as $\text{TD}(\lambda)$. The objective of any
+value estimation algorithm is to minimize the following expression given a set
+of trajectories sampled using a certain policy and a set of hyperparameters:
+$E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
+{(R_{s_t^\tau}^\gamma - V_\theta(s_t^\tau))}^2$.
 
 \noindent\rule[-5pt]{.9\textwidth}{0.4pt}
 {\footnotesize
@@ -237,10 +238,6 @@ it estimates $V_\pi(S)$.
 \end{tabbing}}
 \noindent\rule[10pt]{.9\textwidth}{0.4pt}
 
-\medskip
-\hrule\medskip
-\Head{Implementation overview}\\
-
 \begin{center}
 \begin{figure}
   \includegraphics[width=0.35\textwidth]{figures/sokoban.jpg}
@@ -251,19 +248,19 @@ it estimates $V_\pi(S)$.
 \medskip
 \hrule\medskip
 \Head{Importance of value estimation}\\
+
 Even though the field has shifted towards \textit{Q-Learning} which
-approximates $q_\pi(w, a) = \mathop{\mathbb{E}}[R] =
-\mathop{\mathbb{E}}[\sum_{t=0}^\infty R_t | S_t = s, A_t = a]$,
-$\text{TD}(\gamma)$ can be used to improve the results of state-of-the-art
-algorithms. By definition, $v_\pi(s) = \sum_{a \in \mathcal{A}} q_\pi(s, a)$
-and hence knowing the dynamics of the environment one could efficiently
-navigate it using value function. However, in most cases the transitional
-probabilities are not known to the agent. More sophisticated methods like
-model-based Reinforcement Learning are able to deal with that issue. Despite
-the additional complexity, such methods show good performance in cases where
-thorough planning is crucial for the success of chosen approach. A great
-example of such problem would be Sokoban~\cite{Sokoban} where researchers used
-the environment model to approximate model dynamics.
+approximates $q_\pi(w, a) = \mathbb{E}[R] = \mathbb{E}[\sum_{t=0}^\infty R_t |
+S_t = s, A_t = a]$, $\text{TD}(\gamma)$ can be used to improve the results of
+state-of-the-art algorithms. By definition, $v_\pi(s) = \sum_{a \in
+\mathcal{A}} q_\pi(s, a)$ and hence knowing the dynamics of the environment one
+could efficiently navigate it using value function. However, in most cases the
+transitional probabilities are not known to the agent. More sophisticated
+methods like model-based Reinforcement Learning are able to deal with that
+issue. Despite the additional complexity, such methods show good performance in
+cases where thorough planning is crucial for the success of chosen approach. A
+great example of such problem would be Sokoban where researchers used the
+environment model to approximate model dynamics.
 
 \end{textblock}
 
@@ -273,16 +270,30 @@ the environment model to approximate model dynamics.
 \hrule\medskip
 \Head{Results}\\
 
+Both $\text{TD}(\lambda)$ and $\text{TD}(\gamma)$ are benchmarked on rather
+simple environment 19-Random-Walk. 19-Random-Walk consists of 19 non-terminal
+states situated on a straight line and two terminal states at each end (one
+with $-1$ and one with $+1$ reward, there availible actions are: move left and
+move right. Such choice is satsified by the ability to solve Bellman equation
+fairly easy and obtain true values for each state given a specific policy.
+
 \begin{center}
 \begin{figure}%
     \centering
-    \subfloat[$\text{TD}({\lambda})$]{{\includegraphics[width=0.45\textwidth]{figures/random-walk-td-lambda.png}}}
+    \subfloat[$\text{TD}({\lambda})$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
     \qquad
-    \subfloat[$\text{TD}({\gamma})$]{{\includegraphics[width=0.45\textwidth]{figures/random-walk-td-lambda.png}}}
+    \subfloat[$\text{TD}({\gamma})$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
     \caption{Performance comparison}%
-    \label{fig:example}%
+    \label{fig:results}%
 \end{figure}
 \end{center}
+
+As shown on Figure~\ref{fig:results}, $\text{TD}(\gamma)$ shows superior
+performance for the intermidiate settings of $\gamma$. However, the effect of
+having lower variance of value estimate has its cost: while
+$\text{TD}(\lambda)$ does not require the episode to terminate before operating
+and even allows online setting, $\text{TD}(\gamma)$ does not have any of
+mentioned advantages which makes it infeasible for continuous tasks.
 
 \medskip
 \hrule\medskip
@@ -297,16 +308,16 @@ repository:
 \href{https://github.com/omtcvxyz/optimization-class-project}{omtcvxyz/optimization-class-project}.
 Code for the experiments results reproduction is located in
 \href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{Google
-Colab}. The experiments are based on  code with further intention to contribute
-the results to main
+Colab}. The experiments are based on Shangtong Zhang's work with further
+intention to contribute the obtained results to main
 \href{https://github.com/ShangtongZhang/reinforcement-learning-an-introduction}{reposotiry}
-of Python implementation of "Reinforcement Learning: An
-Introduction"~\cite{Sutton}.
+of Python implementation of ``Reinforcement Learning: An Introduction''.
 
+\begin{comment}
 \begin{thebibliography}{9}
 
 \bibitem{TDGamma}
-  George Konidaris, Scott Niekum, Philip S. Thomas
+  George Konidaris, Scott Niekum, Philip S. Thomas,
   \href{https://papers.nips.cc/paper/4472-td_gamma-re-evaluating-complex-backups-in-temporal-difference-learning.pdf}{
   \textit{$\text{TD}_{\gamma}$: Re-evaluating Complex Backups in Temporal
           Difference Learning}},
@@ -333,6 +344,7 @@ Introduction"~\cite{Sutton}.
   2017.
 
 \end{thebibliography}
+\end{comment}.
 
 \end{textblock}
 
