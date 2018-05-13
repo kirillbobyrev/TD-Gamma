@@ -214,24 +214,24 @@ state-of-the-art algorithms, such as $\text{TD}(\lambda)$. The objective of any
 value estimation algorithm is to minimize the following expression given a set
 of trajectories sampled using a certain policy and a set of hyperparameters:
 $E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
-{(R_{s_t^\tau}^\gamma - V_\theta(s_t^\tau))}^2$.
+{(R_{s_t^\tau}^\gamma - \check{V}_\theta(s_t^\tau))}^2$.
 
 \noindent\rule[-5pt]{.9\textwidth}{0.4pt}
 {\footnotesize
 \begin{tabbing}
-    {\bf Given:} A discount factor, $\gamma$ \\*[\smallskipamount]
-    Let $\theta= \boldsymbol{0}$. \\
+    {\bf Given:} A discount factor $\gamma$, set of trajectories $T$, learning rate $\alpha$ \\*[\smallskipamount]
+    Let $\theta \leftarrow \boldsymbol{0}$. (arbitrary $\check{V}$ parameters initialization) \\
     {\bf for} each trajectory $\tau \in T$ {\bf do} \\
-      \qquad \= Store $\phi_0$ in memory \\
-      \> {\bf for} $u = 1$ to $l_\tau$ {\bf do} \\
+      \qquad \= Store $\phi_0$ in memory ($\phi_t$ is feature vector of state in $\tau$ at timestep $t$) \\
+      \> {\bf for} $u = 1$ to $l_\tau$ {\bf do} ($l_\tau$ stands for length of episode $\tau$) \\
       \> \qquad \= Store $\phi_u$ and $R_{u - 1}$ in memory \\
-      \>  \> $\delta = \boldsymbol{0}$ \\
+      \>  \> $\delta \leftarrow \boldsymbol{0}$ \\
       \>  \> {\bf for} $t = 0$ to $u - 1$ {\bf do} \\
-      \>  \> \qquad \= $\boldsymbol{a} = \phi_t - \gamma^{u - t} \phi_u$ \\
-      \>  \>  \> $b = \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ \\
-      \>  \>  \> $\boldsymbol{\delta} = \boldsymbol{\delta} + w(u - t, l_{\tau} - t)[\boldsymbol{\theta} \cdot \boldsymbol{a} - b] \phi_t$ \\
+      \>  \> \qquad \= $\boldsymbol{a} \leftarrow \phi_t - \gamma^{u - t} \phi_u$ \\
+      \>  \>  \> $b \leftarrow \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ \\
+      \>  \>  \> $\boldsymbol{\delta} \leftarrow \boldsymbol{\delta} + w(u - t, l_{\tau} - t)[\boldsymbol{\theta} \cdot \boldsymbol{a} - b] \phi_t$ \\
       \>  \> {\bf end for} \\
-      \>  \> $\boldsymbol{\theta} = \boldsymbol{\theta} - \alpha \boldsymbol{\delta}$ \\
+      \>  \> $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \alpha \boldsymbol{\delta}$ (perform semi-gradient parameter update) \\
       \> {\bf end for} \\
       \> Discard all $\phi$ and $R$ from memory \\
     {\bf end for}
@@ -280,9 +280,9 @@ fairly easy and obtain true values for each state given a specific policy.
 \begin{center}
 \begin{figure}%
     \centering
-    \subfloat[$\text{TD}({\lambda})$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
+    \subfloat[$\text{TD}({\lambda})$ for different settings of $\lambda$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
     \qquad
-    \subfloat[$\text{TD}({\gamma})$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
+    \subfloat[$\text{TD}({\gamma})$ for different settings of $\gamma$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
     \caption{Performance comparison}%
     \label{fig:results}%
 \end{figure}
@@ -298,6 +298,18 @@ mentioned advantages which makes it infeasible for continuous tasks.
 \medskip
 \hrule\medskip
 \Head{Conclusion \& Future Work}\\
+
+This project explored a subset of value approximation techniques based on
+Temporal Difference Learning, a key idea in Reinforcement Learning. Throughout a
+series of small-scale experiments, it was shown that a novel $\text{TD}(\gamma)$
+algorithm is able to outperform its commonly used precursor. The author has
+developed a better intuition and gained in-depth understanding of the presented
+problem and hopes to continue the research in this area. Few key improvements
+are yet to be made: $\text{TD}_{\gamma}(C)$ is another algorithm introduced by
+the studied paper, which can be improved by introducing automated ways to choose
+$C$ and reducing the hyperparameter search space. Also, $\text{TD}(\gamma)$ can
+be studied in more challenging settings and environments in order to test its
+feasibility in state-of-the-art tasks.
 
 \medskip
 \hrule\medskip
