@@ -181,13 +181,6 @@ Reinforcement Learning problem is typically modelled by Markov Decision Process:
     difference in importance between the future and present rewards
 \end{itemize}
 
-It is often assumed that the transitional probabilities and reward distribution
-are not directly availible to the agent. The goal of the Reinforcement Learning
-agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1})$
-by finding the optimal policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow
-[0, 1]$. In order to achieve this goal, the agent typically learns value
-function $v_\pi(s) = \mathbb{E}[R] = {\mathbb{E}}[\sum_{t=0}^\infty \gamma^t R_t | S_0 = s]$
-
 \begin{center}
 \begin{figure}%
     \centering
@@ -198,6 +191,14 @@ function $v_\pi(s) = \mathbb{E}[R] = {\mathbb{E}}[\sum_{t=0}^\infty \gamma^t R_t
     \label{fig:example}%
 \end{figure}
 \end{center}
+
+It is often assumed that the transitional probabilities and reward distribution
+are not directly availible to the agent. The goal of the Reinforcement Learning
+agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1})$
+by finding the optimal policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow
+[0, 1]$. In order to achieve this goal, the agent typically learns value
+function $v_\pi(s) = \mathbb{E}[R] = {\mathbb{E}}[\sum_{t=0}^\infty \gamma^t
+R_t | S_0 = s]$
 
 \end{textblock}
 
@@ -229,6 +230,7 @@ $E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
       \>  \> {\bf for} $t = 0$ to $u - 1$ {\bf do} \\
       \>  \> \qquad \= $\boldsymbol{a} \leftarrow \phi_t - \gamma^{u - t} \phi_u$ \\
       \>  \>  \> $b \leftarrow \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ \\
+      \>  \>  \> $w(u - t, l_\tau - t) \leftarrow \frac{(\sum_{i=1}^{u - t} \gamma^{2(i - 1))^{-1}}}{\sum_{n = 1}^{l_\tau - t} ({\sum_{i = 1}^n \gamma^{2(i - 1)}})^{-1}}$ --- setup a custom weighting function similar to $\text{TD}(\lambda)$'s \\
       \>  \>  \> $\boldsymbol{\delta} \leftarrow \boldsymbol{\delta} + w(u - t, l_{\tau} - t)[\boldsymbol{\theta} \cdot \boldsymbol{a} - b] \phi_t$ \\
       \>  \> {\bf end for} \\
       \>  \> $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \alpha \boldsymbol{\delta}$ (perform semi-gradient parameter update) \\
@@ -240,7 +242,7 @@ $E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
 
 \begin{center}
 \begin{figure}
-  \includegraphics[width=0.55\textwidth]{figures/experiment-overview.jpg}
+  \includegraphics[width=0.75\textwidth]{figures/experiment-overview.jpg}
   \caption{High-level overview of the experiment structure}%
 \end{figure}
 \end{center}
@@ -268,14 +270,16 @@ environment model to approximate model dynamics.
 
 \medskip
 \hrule\medskip
-\Head{Results}\\
+\Head{Experiment}\\
 
 Both $\text{TD}(\lambda)$ and $\text{TD}(\gamma)$ are benchmarked on rather
 simple environment 19-Random-Walk. 19-Random-Walk consists of 19 non-terminal
 states situated on a straight line and two terminal states at each end (one
 with $-1$ and one with $+1$ reward, there availible actions are: move left and
 move right. Such choice is satsified by the ability to solve Bellman equation
-fairly easy and obtain true values for each state given a specific policy.
+fairly easy and obtain true values for each state given a specific policy. The
+policy to be evaluated is a random policy which uniformly samples action from
+$\mathcal{A}$.
 
 \begin{center}
 \begin{figure}%
