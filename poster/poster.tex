@@ -165,12 +165,12 @@ to maximize the \textit{cumulative reward}.
   \end{figure}
 \end{center}
 
-Reinforcement Learning problem is typically modelled by Markov Decision Process:
+Reinforcement Learning problem is typically modeled by Markov Decision Process:
 
 \begin{itemize}
-  \item $\mathcal{S}$ --- set of states, it can be finitie or infinite, discrete
+  \item $\mathcal{S}$ --- set of states, it can be finite or infinite, discrete
     or continuous
-  \item $\mathcal{A}$ --- set of actions availible to the agent
+  \item $\mathcal{A}$ --- set of actions available to the agent
   \item $P_a(s, s') = P(S_{t+1} = s' | S_t = s, A_t = a)$ --- probabilities of
     action $a$ in state $s$ leading to state $s'$
   \item $r_a(s, s') = r(S_{t+1} = s' | S_t = s, A_t = a)$ --- numerical reward
@@ -187,13 +187,13 @@ Reinforcement Learning problem is typically modelled by Markov Decision Process:
     \subfloat[Atari 2600 games]{{\includegraphics[width=0.40\textwidth]{figures/atari-environment-example.png}}}
     \qquad
     \subfloat[Sokoban]{{\includegraphics[width=0.40\textwidth]{figures/sokoban.jpg}}}
-    \caption{Sample enfironments}%
+    \caption{Sample environments}%
     \label{fig:example}%
 \end{figure}
 \end{center}
 
 It is often assumed that the transitional probabilities and reward distribution
-are not directly availible to the agent. The goal of the Reinforcement Learning
+are not directly available to the agent. The goal of the Reinforcement Learning
 agent is to maximize $\sum_{t=0}^{\infty} \gamma^t R_{a_{t}}(S_{t}, S_{t + 1})$
 by finding the optimal policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow
 [0, 1]$. In order to achieve this goal, the agent typically learns value
@@ -223,13 +223,13 @@ $E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
     {\bf Given:} A discount factor $\gamma$, set of trajectories $T$, learning rate $\alpha$ \\*[\smallskipamount]
     Let $\theta \leftarrow \boldsymbol{0}$. (arbitrary $\check{V}$ parameters initialization) \\
     {\bf for} each trajectory $\tau \in T$ {\bf do} \\
-      \qquad \= Store $\phi_0$ in memory ($\phi_t$ is feature vector of state in $\tau$ at timestep $t$) \\
+      \qquad \= Store $\phi_0$ in memory ($\phi_t$ is feature vector of state in $\tau$ at time step $t$) \\
       \> {\bf for} $u = 1$ to $l_\tau$ {\bf do} ($l_\tau$ stands for length of episode $\tau$) \\
       \> \qquad \= Store $\phi_u$ and $R_{u - 1}$ in memory \\
       \>  \> $\delta \leftarrow \boldsymbol{0}$ \\
       \>  \> {\bf for} $t = 0$ to $u - 1$ {\bf do} \\
-      \>  \> \qquad \= $\boldsymbol{a} \leftarrow \phi_t - \gamma^{u - t} \phi_u$ \\
-      \>  \>  \> $b \leftarrow \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ \\
+      \>  \> \qquad \= $\boldsymbol{a} \leftarrow \phi_t - \gamma^{u - t} \phi_u$ --- accumulate trace \\
+      \>  \>  \> $b \leftarrow \sum_{i = t}^{u - 1} \gamma^{i - t} R_i$ --- accumulate true rewards sequence for last $u - t - 1$ steps \\
       \>  \>  \> $w(u - t, l_\tau - t) \leftarrow \frac{(\sum_{i=1}^{u - t} \gamma^{2(i - 1))^{-1}}}{\sum_{n = 1}^{l_\tau - t} ({\sum_{i = 1}^n \gamma^{2(i - 1)}})^{-1}}$ --- setup a custom weighting function similar to $\text{TD}(\lambda)$'s \\
       \>  \>  \> $\boldsymbol{\delta} \leftarrow \boldsymbol{\delta} + w(u - t, l_{\tau} - t)[\boldsymbol{\theta} \cdot \boldsymbol{a} - b] \phi_t$ \\
       \>  \> {\bf end for} \\
@@ -275,8 +275,8 @@ environment model to approximate model dynamics.
 Both $\text{TD}(\lambda)$ and $\text{TD}(\gamma)$ are benchmarked on rather
 simple environment 19-Random-Walk. 19-Random-Walk consists of 19 non-terminal
 states situated on a straight line and two terminal states at each end (one
-with $-1$ and one with $+1$ reward, there availible actions are: move left and
-move right. Such choice is satsified by the ability to solve Bellman equation
+with $-1$ and one with $+1$ reward, the available actions are: move left and
+move right). Such choice is satisfied by the ability to solve Bellman equation
 fairly easy and obtain true values for each state given a specific policy. The
 policy to be evaluated is a random policy which uniformly samples action from
 $\mathcal{A}$.
@@ -284,52 +284,36 @@ $\mathcal{A}$.
 \begin{center}
 \begin{figure}%
     \centering
-    \subfloat[$\text{TD}({\lambda})$ for different settings of $\lambda$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
+    \subfloat[$\text{TD}({\lambda})$ for different settings of $\lambda$]{{\includegraphics[width=0.46\textwidth]{figures/td_lambda_50.png}}}
     \qquad
-    \subfloat[$\text{TD}({\gamma})$ for different settings of $\gamma$]{{\includegraphics[width=0.46\textwidth]{figures/random-walk-td-lambda.png}}}
-    \caption{Performance comparison}%
+    \subfloat[$\text{TD}({\gamma})$ for different settings of $\gamma$]{{\includegraphics[width=0.46\textwidth]{figures/td_gamma_50.png}}}
+    \caption{Performance comparison for the same number of episodes (100) and
+             different hyperparameters settings}%
     \label{fig:results}%
 \end{figure}
 \end{center}
 
-As shown on Figure~\ref{fig:results}, $\text{TD}(\gamma)$ shows superior
-performance for the intermidiate settings of $\gamma$. However, the effect of
+As shown on Figure~\ref{fig:results}, $\text{TD}(\gamma)$'s performance is
+superior even for non-optimal hyperparameters settings . However, the effect of
 having lower variance of value estimate has its cost: while
 $\text{TD}(\lambda)$ does not require the episode to terminate before operating
 and even allows online setting, $\text{TD}(\gamma)$ does not have any of
-mentioned advantages which makes it infeasible for continuous tasks.
+mentioned advantages which makes it unfeasible for continuous tasks.
 
 \medskip
 \hrule\medskip
 \Head{Conclusion \& Future Work}\\
 
-This project explored a subset of value approximation techniques based on
-Temporal Difference Learning, a key idea in Reinforcement Learning. Throughout a
-series of small-scale experiments, it was shown that a novel $\text{TD}(\gamma)$
-algorithm is able to outperform its commonly used precursor. The author has
-developed a better intuition and gained in-depth understanding of the presented
-problem and hopes to continue the research in this area. Few key improvements
-are yet to be made: $\text{TD}_{\gamma}(C)$ is another algorithm introduced by
-the studied paper, which can be improved by introducing automated ways to choose
-$C$ and reducing the hyperparameter search space. Also, $\text{TD}(\gamma)$ can
-be studied in more challenging settings and environments in order to test its
-feasibility in state-of-the-art tasks.
+An important subset of value approximation techniques based on Temporal
+Difference Learning was studied in this project.  By running algorithm on a
+small task, it was shown that novel $\text{TD}(\gamma)$ algorithm is able to
+outperform its commonly used precursor. Few key improvements are yet to be
+made: $\text{TD}_{\gamma}(C)$ is another algorithm introduced by the studied
+paper, which can be improved by introducing automated ways to choose $C$ and
+reducing the hyperparameter search space. $\text{TD}(\gamma)$ can be studied in
+more challenging settings and environments in order to test its feasibility in
+state-of-the-art tasks.
 
-\medskip
-\hrule\medskip
-\Head{Additional materials \& Acknowledgements}\\
-
-\LaTeX sources and supplementary materials can be found in the author's Github
-repository:
-\href{https://github.com/omtcvxyz/optimization-class-project}{omtcvxyz/optimization-class-project}.
-Code for the experiments results reproduction is located in
-\href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{Google
-Colab}. The experiments are based on Shangtong Zhang's work with further
-intention to contribute the obtained results to main
-\href{https://github.com/ShangtongZhang/reinforcement-learning-an-introduction}{reposotiry}
-of Python implementation of ``Reinforcement Learning: An Introduction''.
-
-\begin{comment}
 \begin{thebibliography}{9}
 
 \bibitem{TDGamma}
@@ -347,20 +331,12 @@ of Python implementation of ``Reinforcement Learning: An Introduction''.
   Second edition,
   2018.
 
-\bibitem{DQN}
-  Volodymyr Mnih et al,
-  \href{https://arxiv.org/abs/1312.5602}{\textit{Playing Atari with Deep Reinforcement Learning}},
-  arXiv:1312.5602,
-  2013.
-
-\bibitem{Sokoban}
-  Théophane Weber, Sébastien Racanière et al,
-  \href{https://arxiv.org/abs/1707.06203}{\textit{Imagination-Augmented Agents for Deep Reinforcement Learning}},
-  arXiv:1707.06203,
-  2017.
+\bibitem{Code}
+  \href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{Google Colab} ---
+  IPython Notebook with experiments based on Shangtong Zhang's work,
+  \href{https://github.com/omtcvxyz/optimization-class-project}{omtcvxyz/optimization-class-project} --- supplementary materials.
 
 \end{thebibliography}
-\end{comment}.
 
 \end{textblock}
 
