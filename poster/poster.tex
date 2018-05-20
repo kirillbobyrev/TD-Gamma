@@ -56,6 +56,7 @@
 \usepackage{hyperref}
 \usepackage{subfig}
 \usepackage{verbatim}
+\usepackage{color}
 
 \definecolor{bluegray}{rgb}{0.15,0.20,0.40}
 \definecolor{bluegraylight}{rgb}{0.35,0.40,0.60}
@@ -117,7 +118,7 @@
 % but it looks awful.
 \begin{textblock}{23}(0,0)
 \Title{Empirical Study of $\text{TD}_{\gamma}$ Reinforcement Learning
-       algorithms}
+       algorithm}
 \end{textblock}
 
 \begin{textblock}{23}(0,0.6)
@@ -221,6 +222,7 @@ $E(\theta) = \frac{1}{2} \sum_{\tau \in T} \sum_{t = 0}^{l_\tau - 1}
 {\footnotesize
 \begin{tabbing}
     {\bf Given:} A discount factor $\gamma$, set of trajectories $T$, learning rate $\alpha$ \\*[\smallskipamount]
+    {\bf Ouput:} $\theta$ --- parameters of value function approximation \\*[\smallskipamount]
     Let $\theta \leftarrow \boldsymbol{0}$. (arbitrary $\check{V}$ parameters initialization) \\
     {\bf for} each trajectory $\tau \in T$ {\bf do} \\
       \qquad \= Store $\phi_0$ in memory ($\phi_t$ is feature vector of state in $\tau$ at time step $t$) \\
@@ -279,7 +281,10 @@ with $-1$ and one with $+1$ reward, the available actions are: move left and
 move right). Such choice is satisfied by the ability to solve Bellman equation
 fairly easy and obtain true values for each state given a specific policy. The
 policy to be evaluated is a random policy which uniformly samples action from
-$\mathcal{A}$.
+$\mathcal{A}$. $TD(\lambda)$ and $TD(\gamma)$ produce $\theta$ so that these
+expectations can be approximated using $\check{V}$. Both algorithms are
+minimizing $\text{RMSE}(v_\pi^*, \theta) = \sqrt{\sum_{s} (v_\pi^*(s) -
+\check{V}(\theta))^2}$
 
 \begin{center}
 \begin{figure}%
@@ -304,21 +309,19 @@ mentioned advantages which makes it unfeasible for continuous tasks.
 \hrule\medskip
 \Head{Conclusion \& Future Work}\\
 
-An important subset of value approximation techniques based on Temporal
-Difference Learning was studied in this project.  By running algorithm on a
-small task, it was shown that novel $\text{TD}(\gamma)$ algorithm is able to
-outperform its commonly used precursor. Few key improvements are yet to be
-made: $\text{TD}_{\gamma}(C)$ is another algorithm introduced by the studied
-paper, which can be improved by introducing automated ways to choose $C$ and
-reducing the hyperparameter search space. $\text{TD}(\gamma)$ can be studied in
-more challenging settings and environments in order to test its feasibility in
-state-of-the-art tasks.
+Novel $\text{TD}(\gamma)$ algorithm was studied in the scope of this project.
+It was proven to be able to outperform its commonly used precursor. Few key
+improvements are yet to be made: $\text{TD}_{\gamma}(C)$ is another algorithm
+introduced by the studied paper, which can be improved by introducing automated
+ways to choose $C$ and reducing the hyperparameter search space.
+$\text{TD}(\gamma)$ can be studied in more challenging settings and
+environments in order to test its feasibility in state-of-the-art tasks.
 
 \begin{thebibliography}{9}
 
 \bibitem{TDGamma}
   George Konidaris, Scott Niekum, Philip S. Thomas,
-  \href{https://papers.nips.cc/paper/4472-td_gamma-re-evaluating-complex-backups-in-temporal-difference-learning.pdf}{
+  \href{https://papers.nips.cc/paper/4472-td_gamma-re-evaluating-complex-backups-in-temporal-difference-learning.pdf}{\color{blue}
   \textit{$\text{TD}_{\gamma}$: Re-evaluating Complex Backups in Temporal
           Difference Learning}},
   NIPS,
@@ -326,15 +329,15 @@ state-of-the-art tasks.
 
 \bibitem{Sutton}
   Richard Sutton and Andrew Barto,
-  \href{http://incompleteideas.net/book/the-book-2nd.html}{\textit{Reinforcement Learning: An Introduction}},
+  \href{http://incompleteideas.net/book/the-book-2nd.html}{\color{blue}\textit{Reinforcement Learning: An Introduction}},
   MIT Press, Cambridge, MA,
   Second edition,
   2018.
 
 \bibitem{Code}
-  \href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{Google Colab} ---
+  \href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{\color{blue}Google Colab} ---
   IPython Notebook with experiments based on Shangtong Zhang's work,
-  \href{https://github.com/omtcvxyz/optimization-class-project}{omtcvxyz/optimization-class-project} --- supplementary materials.
+  \href{https://github.com/omtcvxyz/optimization-class-project}{\color{blue}omtcvxyz/optimization-class-project} --- materials.
 
 \end{thebibliography}
 
