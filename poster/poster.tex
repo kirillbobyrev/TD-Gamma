@@ -117,7 +117,7 @@
 % Watch out for hyphenation in titles - LaTeX will do it
 % but it looks awful.
 \begin{textblock}{23}(0,0)
-\Title{Empirical Study of $\text{TD}_{\gamma}$ Reinforcement Learning
+\Title{Empirical Study of $\text{TD}({\gamma})$ Reinforcement Learning
        algorithm}
 \end{textblock}
 
@@ -284,7 +284,8 @@ policy to be evaluated is a random policy which uniformly samples action from
 $\mathcal{A}$. $TD(\lambda)$ and $TD(\gamma)$ produce $\theta$ so that these
 expectations can be approximated using $\check{V}$. Both algorithms are
 minimizing $\text{RMSE}(v_\pi^*, \theta) = \sqrt{\sum_{s} (v_\pi^*(s) -
-\check{V}(\theta))^2}$
+\check{V}(\theta))^2}$ and thus the lower RMSE, the better algorithm's
+performance.
 
 \begin{center}
 \begin{figure}%
