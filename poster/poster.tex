@@ -1,7 +1,4 @@
-%  Template file for an a0 landscape poster.
-% Written by Graeme, 2001-03 based on Norman's original microlensing
-% poster.
-%
+%  Template file for an a0 landscape poster.  % Written by Graeme, 2001-03 based on Norman's original microlensing % poster.  %
 % See discussion and documentation at
 % <http://www.astro.gla.ac.uk/users/norman/docs/posters/>
 %
@@ -25,7 +22,6 @@
 \pagestyle{empty}
 \setcounter{secnumdepth}{0}
 \renewcommand{\familydefault}{\sfdefault}
-\newcommand{\QED}{~~\rule[-1pt]{8pt}{8pt}}\def\qed{\QED}
 
 \renewcommand{\reals}{{\mbox{\bf R}}}
 
@@ -47,7 +43,6 @@
 %\usepackage{epstopdf}
 
 % These colours are tried and tested for titles and headers. Don't
-% over use color!
 \usepackage{color}
 \definecolor{Red}{rgb}{0.9,0.0,0.1}
 
@@ -85,7 +80,6 @@
 % Note that [40mm,40mm] is the margin round the edge of the page --
 % it is _not_ the grid size. That is always defined as
 % PAGE_WIDTH/HGRID and PAGE_HEIGHT/VGRID. In this case we use
-% 23 x 12. This gives us three columns of width 7 boxes, with a gap of
 % width 1 in between them. 12 vertical boxes is a good number to work
 % with.
 %
@@ -161,7 +155,7 @@ to maximize the \textit{cumulative reward}.
 
 \begin{center}
   \begin{figure}
-    \includegraphics[width=0.45\textwidth]{figures/rl-intro-diagram.jpeg}
+    \includegraphics[width=0.45\textwidth]{figures/rl-intro-diagram.eps}
     \caption{Reinforcement Learning world model}
   \end{figure}
 \end{center}
@@ -185,9 +179,9 @@ Reinforcement Learning problem is typically modeled by Markov Decision Process:
 \begin{center}
 \begin{figure}%
     \centering
-    \subfloat[Atari 2600 games]{{\includegraphics[width=0.40\textwidth]{figures/atari-environment-example.png}}}
+    \subfloat[Atari 2600 games]{{\includegraphics[width=0.40\textwidth]{figures/atari-environment-example.eps}}}
     \qquad
-    \subfloat[Sokoban]{{\includegraphics[width=0.40\textwidth]{figures/sokoban.jpg}}}
+    \subfloat[Sokoban]{{\includegraphics[width=0.40\textwidth]{figures/sokoban.eps}}}
     \caption{Sample environments}%
     \label{fig:example}%
 \end{figure}
@@ -283,16 +277,16 @@ fairly easy and obtain true values for each state given a specific policy. The
 policy to be evaluated is a random policy which uniformly samples action from
 $\mathcal{A}$. $TD(\lambda)$ and $TD(\gamma)$ produce $\theta$ so that these
 expectations can be approximated using $\check{V}$. Both algorithms are
-minimizing $\text{RMSE}(v_\pi^*, \theta) = \sqrt{\sum_{s} (v_\pi^*(s) -
-\check{V}(\theta))^2}$ and thus the lower RMSE, the better algorithm's
+minimizing $\text{RMSE}(v_\pi^*, \theta) = \sqrt{\sum_{s} {(v_\pi^*(s) -
+\check{V}(\theta))}^2}$ and thus the lower RMSE, the better algorithm's
 performance.
 
 \begin{center}
 \begin{figure}%
     \centering
-    \subfloat[$\text{TD}({\lambda})$ for different settings of $\lambda$]{{\includegraphics[width=0.46\textwidth]{figures/td_lambda_50.png}}}
+    \subfloat[$\text{TD}({\lambda})$ for different settings of $\lambda$]{{\includegraphics[width=0.46\textwidth]{figures/td_lambda_50.eps}}}
     \qquad
-    \subfloat[$\text{TD}({\gamma})$ for different settings of $\gamma$]{{\includegraphics[width=0.46\textwidth]{figures/td_gamma_50.png}}}
+    \subfloat[$\text{TD}({\gamma})$ for different settings of $\gamma$]{{\includegraphics[width=0.46\textwidth]{figures/td_gamma_50.eps}}}
     \caption{Performance comparison for the same number of episodes (100) and
              different hyperparameters settings}%
     \label{fig:results}%
@@ -300,11 +294,11 @@ performance.
 \end{center}
 
 As shown on Figure~\ref{fig:results}, $\text{TD}(\gamma)$'s performance is
-superior even for non-optimal hyperparameters settings . However, the effect of
+superior even for non-optimal hyperparameters settings. However, the effect of
 having lower variance of value estimate has its cost: while
 $\text{TD}(\lambda)$ does not require the episode to terminate before operating
 and even allows online setting, $\text{TD}(\gamma)$ does not have any of
-mentioned advantages which makes it unfeasible for continuous tasks.
+mentioned advantages which makes it infeasible for continuous tasks.
 
 \medskip
 \hrule\medskip
@@ -315,8 +309,8 @@ It was proven to be able to outperform its commonly used precursor. Few key
 improvements are yet to be made: $\text{TD}_{\gamma}(C)$ is another algorithm
 introduced by the studied paper, which can be improved by introducing automated
 ways to choose $C$ and reducing the hyperparameter search space.
-$\text{TD}(\gamma)$ can be studied in more challenging settings and
-environments in order to test its feasibility in state-of-the-art tasks.
+$\text{TD}(\gamma)$ can be studied in more challenging settings using more
+sophisticated environments.
 
 \begin{thebibliography}{9}
 
@@ -331,14 +325,13 @@ environments in order to test its feasibility in state-of-the-art tasks.
 \bibitem{Sutton}
   Richard Sutton and Andrew Barto,
   \href{http://incompleteideas.net/book/the-book-2nd.html}{\color{blue}\textit{Reinforcement Learning: An Introduction}},
-  MIT Press, Cambridge, MA,
   Second edition,
   2018.
 
 \bibitem{Code}
-  \href{https://drive.google.com/file/d/1fmRALZn0-BRKlHWK\_juP9sswUdpEtCZ0/view?usp=sharing}{\color{blue}Google Colab} ---
-  IPython Notebook with experiments based on Shangtong Zhang's work,
-  \href{https://github.com/omtcvxyz/optimization-class-project}{\color{blue}omtcvxyz/optimization-class-project} --- materials.
+  \href{https://colab.research.google.com/gist/kbobyrev/90efb074a4740f8a8a6abf22e58d988a/td-gamma.ipynb}{\color{blue}Google Colab} ---
+  Python Notebook with experiments based on Shangtong Zhang's work,
+  \href{https://github.com/omtcvxyz/optimization-class-project}{\color{blue}GitHub repository} --- supplementary materials.
 
 \end{thebibliography}
 
