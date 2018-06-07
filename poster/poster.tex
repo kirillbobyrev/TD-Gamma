@@ -172,7 +172,7 @@ Reinforcement Learning problem is typically modeled by Markov Decision Process:
     distribution, a rule incorporated in the environment which indicates which
     reward is given to the agent upon taking action $a$ in state $s$ and
     resulting in state $s'$
-  \item $\gamma \in [0, 1]$ --- discount factor which controls the relative
+  \item $\gamma \in [0, 1]$ --- discount factor which affects the relative
     difference in importance between the future and present rewards
 \end{itemize}
 
@@ -252,12 +252,12 @@ approximates $q_\pi(w, a) = \mathbb{E}[R] = \mathbb{E}[\sum_{t=0}^\infty R_t |
 S_t = s, A_t = a]$, $\text{TD}(\gamma)$ can be used to improve the results of
 state-of-the-art algorithms. By definition, $v_\pi(s) = \sum_{a \in
 \mathcal{A}} q_\pi(s, a)$ and hence knowing the dynamics of the environment one
-could efficiently navigate it using value function. However, in most cases the
+could efficiently navigate it using value function. However, in most cases, the
 transitional probabilities are not known to the agent. More sophisticated
 methods like model-based Reinforcement Learning are able to deal with that
 issue. Despite the additional complexity, such methods show good performance in
-cases where thorough planning is crucial for the success of chosen approach. A
-great example of such problem would be Sokoban where researchers used the
+cases where thorough planning is crucial to the success of the chosen approach.
+A great example of such problem would be Sokoban where researchers used the
 environment model to approximate model dynamics.
 
 \end{textblock}
