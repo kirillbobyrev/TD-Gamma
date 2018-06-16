@@ -124,7 +124,7 @@ Kirill Bobyrev
 {
 \Large
 \color{bluegray}
-\emph{Optimization Class Project. MIPT}
+\emph{MIPT}
 }
 \end{textblock}
 
@@ -269,17 +269,14 @@ environment model to approximate model dynamics.
 \Head{Experiment}\\
 
 Both $\text{TD}(\lambda)$ and $\text{TD}(\gamma)$ are benchmarked on rather
-simple environment 19-Random-Walk. 19-Random-Walk consists of 19 non-terminal
-states situated on a straight line and two terminal states at each end (one
-with $-1$ and one with $+1$ reward, the available actions are: move left and
-move right). Such choice is satisfied by the ability to solve Bellman equation
-fairly easy and obtain true values for each state given a specific policy. The
-policy to be evaluated is a random policy which uniformly samples action from
-$\mathcal{A}$. $TD(\lambda)$ and $TD(\gamma)$ produce $\theta$ so that these
-expectations can be approximated using $\check{V}$. Both algorithms are
-minimizing $\text{RMSE}(v_\pi^*, \theta) = \sqrt{\sum_{s} {(v_\pi^*(s) -
-\check{V}(\theta))}^2}$ and thus the lower RMSE, the better algorithm's
-performance.
+simple environment --- 19-Random-Walk. Such choice is satisfied by the ability
+to solve Bellman equation fairly easy and obtain true values for each state
+given a specific policy. The policy to be evaluated is a random policy which
+uniformly samples action from $\mathcal{A}$. $TD(\lambda)$ and $TD(\gamma)$
+produce $\theta$ so that these expectations can be approximated using
+$\check{V}$. Both algorithms are minimizing $\text{RMSE}(v_\pi^*, \theta) =
+\sqrt{\sum_{s} {(v_\pi^*(s) - \check{V}(\theta))}^2}$ and thus the lower RMSE,
+the better algorithm's performance.
 
 \begin{center}
 \begin{figure}%
@@ -298,7 +295,11 @@ superior even for non-optimal hyperparameters settings. However, the effect of
 having lower variance of value estimate has its cost: while
 $\text{TD}(\lambda)$ does not require the episode to terminate before operating
 and even allows online setting, $\text{TD}(\gamma)$ does not have any of
-mentioned advantages which makes it infeasible for continuous tasks.
+mentioned advantages which makes it infeasible for continuous tasks. Despite
+the performance being superior, newly introduced algorithm's computational
+complexity is $O(l_{\tau}^3)$ (where $l_\tau$ stands for given episode length)
+for each episode. Given that sampled episodes tend to be long in the vast
+majority of the environments, this presents a huge problem.
 
 \medskip
 \hrule\medskip
@@ -331,7 +332,7 @@ sophisticated environments.
 \bibitem{Code}
   \href{https://colab.research.google.com/gist/kbobyrev/90efb074a4740f8a8a6abf22e58d988a/td-gamma.ipynb}{\color{blue}Google Colab} ---
   Python Notebook with experiments based on Shangtong Zhang's work,
-  \href{https://github.com/omtcvxyz/optimization-class-project}{\color{blue}GitHub repository} --- supplementary materials.
+  \href{https://github.com/omtcvxyz/td-gamma}{\color{blue}GitHub repository} --- supplementary materials.
 
 \end{thebibliography}
 
