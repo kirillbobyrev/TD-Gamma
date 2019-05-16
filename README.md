@@ -13,5 +13,5 @@ Obtained results show that **TD(γ)** was able to outperform its precursors
 given a fairly simple environment and policy, but was much more
 resource-intensive in terms of memory and computational complexity.
 
-* [Compiled poster](https://kbobyrev.github.io/resources/TD-Gamma-Poster.pdf)
-* [Code](https://colab.research.google.com/gist/kbobyrev/90efb074a4740f8a8a6abf22e58d988a/td-gamma.ipynb)
+* [Compiled poster](https://kirillbobyrev.github.io/resources/TD-Gamma-Poster.pdf)
+* [Code](https://colab.research.google.com/gist/kirillbobyrev/90efb074a4740f8a8a6abf22e58d988a/td-gamma.ipynb)
